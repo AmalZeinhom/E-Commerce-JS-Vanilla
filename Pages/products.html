@@ -1,0 +1,83 @@
+  <!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products</title>
+  </head>
+  </html>
+  <body>
+      <section id="productsPage">
+      <div class="container">
+        <div class="row g-4">
+        <div class="col-md-2">
+          <section id="filter" class="filter">
+            <div class="container">
+              <h2 class="filter-title">
+                Filter Products
+              </h2>
+              <form> 
+                <div class="dropdown" id="categoryDropdown">
+                  <button class="btn dropdown-toggle btn-dropdown w-100" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Categories
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  </ul>
+                </div>
+
+                <div class="dropdown" id="minPriceDropdown">
+                  <button class="btn dropdown-toggle btn-dropdown w-100" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    
+                    Min Price
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">50</a></li>
+                    <li><a class="dropdown-item" href="#">100</a></li>
+                    <li><a class="dropdown-item" href="#">200</a></li>
+                  </ul>
+                </div>
+
+                <div class="dropdown" id="maxPriceDropdown">
+                  <button class="btn dropdown-toggle btn-dropdown w-100" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Max Price
+                  </button>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">500</a></li>
+                    <li><a class="dropdown-item" href="#">1000</a></li>
+                    <li><a class="dropdown-item" href="#">2000</a></li>
+                  </ul>
+                </div>
+
+              <div class="btn-apply">
+                <button type="button" class="btn btn-form w-100 text-white">
+                  Apply Filters
+                </button>
+              </div>
+
+                <div class="btn-reset">
+                  <button type="reset" class="btn btn-form w-100 text-white">
+                  Reset
+                </button>
+                </div>
+              </form>
+            </div>
+          </section>
+        </div>
+
+        <div class="col-md-10">
+          <section id="products">
+            <div class="container">
+              <div class="row g-4" id="rowData"></div>
+            </div>
+          </section>
+        </div>
+      </div>
+      </div>
+  </body>
+  </html>

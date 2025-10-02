@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin</title>
+  </head>
+  <body>
+    <section id="adminPage" class="admin">
+      <div class="container">
+        <div class="col-lg-12">
+            <div class="row">
+            <div class="title">
+              <h2>Admin Page - Manage Products</h2>
+            </div>
+
+            <div class="search">
+              <input
+                type="search"
+                id="searchInput"
+                placeholder="Search Products By Name.."
+              />
+              <button id="searchBtn">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </button>
+            </div>
+
+            <table class="table" id="productsTable">
+              <thead>
+                <tr>
+                  <th>PRODUCT ID</th>
+                  <th>PRODUCT NAME</th>
+                  <th>CATEGORY NAME</th>
+                  <th>CATEGORY ID</th>
+                  <th>ACTIONS</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+
+            <div class="pagination">
+              <button id="prevBtn">
+                <i class="fa-solid fa-angles-left"></i>
+                Previous
+              </button>
+              <button id="nextBtn">
+                Next
+                <i class="fa-solid fa-angles-right"></i>
+              </button>
+            </div>
+        </div>
+        </div>
+      </div>
+    </section>
+
+  </body>
+</html>

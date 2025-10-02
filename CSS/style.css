@@ -1,0 +1,32 @@
+body,
+html {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* !=====================Navbar==================== */
+.navBg {
+  background-color: #f0e4d3;
+}
+
+.navBg .container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nav-link {
+  font-weight: 400;
+  font-size: 14px;
+  color: white;
+  padding: 6px 16x;
+  border-radius: 30px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.nav-link.active,
+.nav-link:hover {
+  color: rgb(0, 154, 216) !important;
+  border: 2px solid rgb(0, 154, 216);
+}

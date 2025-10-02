@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E-Commerce</title>
+
+  <!-- !Font Awasome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- !FavIcon -->
+  <link rel="icon" href="./Images/weather-forecast-icon-18.jpg" />
+
+  <!-- !Bootstrap -->
+  <link rel="stylesheet" href="./CSS/bootstrap.min.css" />
+
+  <!-- !CSS -->
+  <link rel="stylesheet" href="./CSS/style.css" />
+</head>
+
+
+<body>
+  <header class="nav-section">
+    <nav class="navbar navbar-expand-lg navBg">
+      <div class="container">
+        <a class="navbar-brand" href="#">
+          <img src="./assets/images/logo.png" class="w-25" alt="shopping" />
+          <div class="logo ms-2">
+          </div>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+          <ul class="navbar-nav gap-5">
+            <li class="nav-item">
+              <a class="nav-link active" data-page="products" href="#">Products</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white"  data-page="admin" href="#">Admin</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link text-white"  data-page="create" href="#">Create</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <main id="content" class="container-fluid mt-4"></main>
+
+  
+
+  <!-- !JAVASCRIPT -->
+  <script src="./JS/bootstrap.bundle.min.js"></script>
+  <script src="./JS/app.js"></script>
+</body>
+
+</html>

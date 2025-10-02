@@ -1,0 +1,59 @@
+/* !=====================Cards==================== */
+.card {
+  border: none;
+  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.1);
+  border-radius: 40px;
+  min-height: 300px;
+}
+
+.card-title {
+  color: #687fe5;
+  transition: all 0.3s ease;
+}
+
+.card-title:hover {
+  color: #896c6c;
+}
+
+.badge {
+  background-color: #896c6c;
+}
+
+.price {
+  color: #9abf80;
+}
+/* !=====================Filter==================== */
+.filter-title {
+  font-size: 1.5rem;
+  margin: 20px 0;
+}
+
+.dropdown {
+  padding-bottom: 1.25rem;
+}
+
+.btn-dropdown {
+  background-color: #fcd8cd;
+}
+
+.btn-dropdown:hover {
+  background-color: #896c6c;
+  color: #fff;
+}
+
+.filter form {
+  width: 100%;
+}
+
+.btn-form {
+  background-color: #896c6c;
+}
+
+.btn-form:hover {
+  background-color: #896c6c;
+  opacity: 0.8;
+}
+
+.btn-apply {
+  padding-bottom: 0.625rem;
+}
