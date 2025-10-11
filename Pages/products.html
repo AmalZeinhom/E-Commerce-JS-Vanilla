@@ -93,12 +93,10 @@
   const navLinks = document.getElementById("nav-links");
   const loader = document.getElementById("loader");
 
-  // ✅ Navbar toggle
   menuToggle.addEventListener("click", () => {
     navLinks.classList.toggle("active");
   });
 
-  // ✅ Loader functions
   function showLoader() {
     loader.style.display = "flex";
     loader.classList.remove("hide");
@@ -108,13 +106,12 @@
     loader.classList.add("hide");
     setTimeout(() => {
       loader.style.display = "none";
-    }, 3000);
+    }, 1200);
   }
 
   let page = 1;
   const limit = 12;
 
-  // ✅ Fetch Categories
   async function fetchCategories() {
     showLoader();
     try {
@@ -136,7 +133,6 @@
     }
   }
 
-  // ✅ Fetch Products
   async function fetchProducts() {
     showLoader();
     try {
@@ -160,7 +156,7 @@
     } catch (err) {
       console.error("Error loading products:", err);
       document.getElementById("rowData").innerHTML =
-        `<p class="text-danger text-center">Failed to load products 😢</p>`;
+        `<p class="text-danger text-center">Failed to load products</p>`;
     } finally {
       setTimeout(() => hideLoader(), 300);
     }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Create Product</title>
-    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+    <link rel="icon" type="image/png" href="./assets/images/logo.png">
 
     <!-- !================== Font Awesome =============== -->
     <link
@@ -177,7 +177,7 @@
 
   // ========== Load Categories ==========
   async function loadCategories() {
-    showLoader(); // ✅ Show loader while fetching
+    showLoader(); //
     try {
       const res = await fetch("https://api.escuelajs.co/api/v1/categories");
       const categories = await res.json();
@@ -189,8 +189,8 @@
         categorySelect.appendChild(option);
       });
 
-      // ✅ slight delay to make loader visible
-      setTimeout(() => hideLoader(), 500);
+   
+      setTimeout(() => hideLoader(),1200);
     } catch (err) {
       console.error("Error loading categories:", err);
       hideLoader();
@@ -243,7 +243,7 @@
     };
 
     try {
-      showLoader(); // ✅ Show loader before sending request
+      showLoader(); 
 
       const res = await fetch("https://api.escuelajs.co/api/v1/products", {
         method: "POST",
@@ -251,7 +251,7 @@
         body: JSON.stringify(product),
       });
 
-      hideLoader(); // ✅ Hide loader after response
+      hideLoader(); 
 
       if (!res.ok) throw new Error("Failed to create product");
 
@@ -274,7 +274,6 @@
     }
   });
 
-  // Initialize
   loadCategories();
 </script>
 
