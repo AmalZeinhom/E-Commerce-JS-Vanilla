@@ -1,65 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>E-Commerce</title>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Shopping Cart</title>
 
-  <!-- !Font Awasome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
-    integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
-    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="icon" type="image/png" href="./assets/images/logo.png">
 
-  <!-- !FavIcon -->
-  <link rel="icon" href="./Images/weather-forecast-icon-18.jpg" />
+    <!-- CSS -->
+    <link rel="stylesheet" href="./CSS/navbar.css" />
+    <link rel="stylesheet" href="./CSS/loader.css">
+    <link rel="stylesheet" href="./CSS/style.css" />
+  </head>
 
-  <!-- !Bootstrap -->
-  <link rel="stylesheet" href="./CSS/bootstrap.min.css" />
-
-  <!-- !CSS -->
-  <link rel="stylesheet" href="./CSS/style.css" />
-</head>
-
-
-<body>
-  <header class="nav-section">
-    <nav class="navbar navbar-expand-lg navBg">
-      <div class="container">
-        <a class="navbar-brand" href="#">
-          <img src="./assets/images/logo.png" class="w-25" alt="shopping" />
-          <div class="logo ms-2">
-          </div>
+  <body>
+    <div class="loader-container" id="loader">
+      <span class="loader"></span>
+    </div>
+     <header>
+      <nav class="navbar">
+        <a href="../index.html" class="logo">
+          <img src="../assets/images/logo.png" alt="Shopping" />
         </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-          aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
+        <button class="menu-toggle" id="menu-toggle">☰</button>
 
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav gap-5">
-            <li class="nav-item">
-              <a class="nav-link active" data-page="products" href="#">Products</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white"  data-page="admin" href="#">Admin</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-white"  data-page="create" href="#">Create</a>
-            </li>
+        <div class="links" id="nav-links">
+          <ul>
+            <li><a href="../index.html" class="active">Home</a></li>
+            <li><a href="../Pages/products.html">Products</a></li>
+            <li><a href="../Pages/admin.html">Admin</a></li>
+            <li><a href="../Pages/create.html">Create</a></li>
           </ul>
         </div>
+      </nav>
+    </header>
+
+
+    <section class="hero">
+      <div class="hero-content">
+        <h1>Welcome to Your Shopping Store</h1>
+        <p>Discover our latest products and exclusive offers!</p>
+        <a href="./Pages/products.html" class="btn hero-btn">Shop Now</a>
       </div>
-    </nav>
-  </header>
+    </section>
 
-  <main id="content" class="container-fluid mt-4"></main>
+    <section class="featured-products">
+      <div class="container">
+        <h2 class="section-title">Featured Products</h2>
+        <div id="products-container" class="products-grid"></div>
 
-  
+        <div class="pagination">
+          <button id="prevBtn" class="btn-pagination">Previous</button>
+          <button id="nextBtn" class="btn-pagination">Next</button>
+        </div>
+      </div>
+    </section>
 
-  <!-- !JAVASCRIPT -->
-  <script src="./JS/bootstrap.bundle.min.js"></script>
-  <script src="./JS/app.js"></script>
-</body>
+    <footer>
+      <p>© 2025 MyShop — Built with ❤️ using JavaScript & Bootstrap</p>
+    </footer>
 
+    <!-- 🔹 JS -->
+     <script>
+      const loader = document.getElementById("loader");
+      const container = document.getElementById("products-container");
+      const prevBtn = document.getElementById("prevBtn");
+      const nextBtn = document.getElementById("nextBtn");
+
+      const menuToggle = document.getElementById("menu-toggle");
+      const navLinks = document.getElementById("nav-links");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      let currentPage = 1;
+      const limit = 9;
+
+      async function fetchProducts(page = 1) {
+        showLoader();
+        const offset = (page - 1) * limit;
+
+        try {
+          const res = await fetch(
+            `https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=${limit}`
+          );
+          const products = await res.json();
+
+          setTimeout(() => {
+            hideLoader();
+            if (products.length > 0) {
+              displayProducts(products);
+            } else {
+              container.innerHTML = `
+                <div class="no-products">
+                  <img src="./assets/images/empty.png" alt="No Products" />
+                  <p>No products found!</p>
+                </div>
+              `;
+            }
+          }, 3000);
+        } catch (error) {
+          hideLoader();
+          container.innerHTML = `<p class="error">Failed to load products. Please try again later.</p>`;
+        }
+      }
+
+      function displayProducts(products) {
+        container.innerHTML = products
+          .map(
+            (p) => `
+          <div class="product-card">
+            <img src="${p.images?.[0] || "./assets/images/no-image.png"}" alt="${p.title}" />
+            <div class="product-info">
+              <h3>${p.title}</h3>
+              <p class="price">${p.price} $</p>
+              <a href="./Pages/product-details.html?id=${p.id}" class="btn view-btn">View</a>
+            </div>
+          </div>
+        `
+          )
+          .join("");
+      }
+
+      // Show/Hide Loader
+      function showLoader() {
+        loader.style.display = "flex";
+      }
+
+      function hideLoader() {
+        loader.style.display = "none";
+      }
+
+      // Pagination
+      nextBtn.addEventListener("click", () => {
+        currentPage++;
+        fetchProducts(currentPage);
+        scrollToSection();
+      });
+
+      prevBtn.addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchProducts(currentPage);
+          scrollToSection();
+        }
+      });
+
+      function scrollToSection() {
+        window.scrollTo({
+          top: container.offsetTop - 300,
+          behavior: "smooth",
+        });
+      }
+
+      fetchProducts();
+    </script>
+  </body>
 </html>
+

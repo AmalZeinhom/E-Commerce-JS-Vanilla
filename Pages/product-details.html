@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Product Details</title>
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+    <!-- Font Awesome -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
@@ -11,15 +14,123 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     />
+
+    <!-- Bootstrap + Custom CSS -->
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css" />
+    <link rel="stylesheet" href="../CSS/navbar.css" />
+    <link rel="stylesheet" href="../CSS/loader.css">
     <link rel="stylesheet" href="../CSS/productDetails.css" />
   </head>
   <body>
-    <section class="product-details">
-      <div class="container my-5">
-        <div class="row g-4" id="productDetails"></div>
-      </div>
-    </section>
+    <div class="loader-container" id="loader">
+      <span class="loader"></span>
+    </div>
 
-    <script src="../JS/productDetails.js"></script>
+    <header>
+      <nav class="navbar">
+        <a href="../index.html" class="logo">
+          <img src="../assets/images/logo.png" alt="Shopping" />
+        </a>
+
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+
+        <div class="links" id="nav-links">
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Pages/products.html">Products</a></li>
+            <li><a href="../Pages/admin.html">Admin</a></li>
+            <li><a href="../Pages/create.html">Create</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+
+    <!-- Product Details -->
+    <main>
+      <section class="product-details py-5">
+        <div class="container">
+          <div id="productDetails" class="row justify-content-center"></div>
+        </div>
+      </section>
+    </main>
+
+    <script src="../JS/bootstrap.bundle.min.js"></script>
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const navLinks = document.getElementById("nav-links");
+  const loader = document.getElementById("loader");
+
+  // ✅ Navbar toggle
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+
+  // ✅ Loader functions
+  function showLoader() {
+    loader.style.display = "flex";
+    loader.classList.remove("hide");
+  }
+
+  function hideLoader() {
+    loader.classList.add("hide");
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 3000);
+  }
+
+  // ✅ Get product ID
+  const params = new URLSearchParams(window.location.search);
+  const productID = params.get("id");
+  const productDetails = document.getElementById("productDetails");
+
+  // ✅ Fetch product details
+  async function fetchProductDetails(id) {
+    showLoader(); // ⬅️ Show loader before fetching
+    try {
+      const res = await fetch(`https://api.escuelajs.co/api/v1/products/${id}`);
+      const product = await res.json();
+
+      productDetails.innerHTML = `
+        <div class="col-lg-10 card p-4 shadow-sm border-0">
+          <a class="backBtn mb-3 d-inline-flex align-items-center" id="goBackBtn">
+            <i class="fa-solid fa-angles-left me-2"></i>
+            <span>Go Back</span>
+          </a>
+          <div class="row align-items-center g-4">
+            <div class="col-md-5 text-center">
+              <img src="${product.images?.[0] || "../assets/images/Tshirt.webp"}"
+                class="img-fluid rounded" alt="${product.title}" />
+            </div>
+            <div class="col-md-7">
+              <h2 class="mb-3">${product.title}</h2>
+              <p class="category">Category: <span>${product.category?.name || "N/A"}</span></p>
+              <p class="price">$${product.price}</p>
+              <p class="description">${product.description}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("goBackBtn").addEventListener("click", () => {
+        window.history.back();
+      });
+    } catch (err) {
+      console.error("Error fetching product details:", err);
+      productDetails.innerHTML = `<p class="text-danger text-center">Error loading product details</p>`;
+    } finally {
+      // ⬅️ Hide loader after loading
+      setTimeout(() => hideLoader(), 500);
+    }
+  }
+
+  // ✅ Load details
+  if (productID) {
+    fetchProductDetails(productID);
+  } else {
+    productDetails.innerHTML = `<p class="text-danger text-center">No product selected</p>`;
+  }
+</script>
+
   </body>
 </html>

@@ -1,73 +1,64 @@
-.product-details {
-  display: flex;
-  justify-content: center; 
-  align-items: center;
-  min-height: 100vh;
+body {
+  font-family: "Poppins", sans-serif;
+  background-color: #F5FAE1;
+  color: #333;
+  margin: 0;
+  padding: 0;
 }
 
-.product-details .container {
-  background-color: #f0e4d3;
-  border-radius: 0.625rem;
-  box-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
-  max-width: 80%;
-  margin: auto;
+/* Product details section */
+#productDetails {
+  background-color: #fff;
+  border-radius: 16px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
 }
 
-.backBtn {
-  padding: 1.25rem 1.875rem 0;
-  display: flex;
-  align-items: center;
-  color: #896c6c;
-  font-weight: 900;
-  transition: all 1s ease;
-  cursor: pointer;
-  background-color: transparent;
-  border: none;
+#productDetails img {
+  max-width: 100%;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
 }
 
-.backBtn:hover {
-  transform: translateX(-20px);
+#productDetails img:hover {
+  transform: scale(1.05);
 }
 
-.pic {
-  max-width: 20%;
-  height: auto;
-  padding: 50px;
+#productDetails h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #222;
 }
 
-.pic img {
-  width: 100%;
-  border-radius: 0.625rem;
-  box-shadow: 10px 5px 5px rgba(0, 0, 0, 0.2);
-}
-
-.details {
-  display: flex;
-  align-items: flex-start;
-}
-
-.info {
-  padding: 1.875rem 0;
-}
-
-.info h2 {
-  color: #896c6c;
-  font-size: 2.125rem;
+#productDetails .category {
+  font-weight: 500;
+  color: #666;
   margin-bottom: 0.5rem;
 }
 
-.info p:nth-child(2) {
-  font-weight: 600;
-  color: #334443;
-  margin-top: 0;
+#productDetails .category span {
+  color: #ff9800;
 }
 
-.info p:nth-child(3) {
-  font-weight: 900;
+#productDetails .price {
   font-size: 1.5rem;
-  color: #334443;
+  font-weight: 600;
+  color: #ff9800;
+  margin-bottom: 1rem;
 }
 
-.info p:nth-child(4) {
-  max-width: 80%;
+#productDetails .description {
+  color: #555;
+  line-height: 1.7;
+}
+
+#goBackBtn {
+  text-decoration: none;
+  font-weight: 500;
+  color: #222;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+#goBackBtn:hover {
+  color: #ff9800;
 }

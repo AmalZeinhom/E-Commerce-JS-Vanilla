@@ -3,84 +3,280 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Create</title>
+    <title>Create Product</title>
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+    <!-- !================== Font Awesome =============== -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- !================== CSS Files =============== -->
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css" />
+    <link rel="stylesheet" href="../CSS/navbar.css" />
+    <link rel="stylesheet" href="../CSS/loader.css">
+    <link rel="stylesheet" href="../CSS/create.css" />
   </head>
   <body>
-    <section id="createPage" class="create">
+    <div class="loader-container" id="loader">
+      <span class="loader"></span>
+    </div>
+
+    <header>
+      <nav class="navbar">
+        <a href="../index.html" class="logo">
+          <img src="../assets/images/logo.png" alt="Shopping" />
+        </a>
+
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+
+        <div class="links" id="nav-links">
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Pages/products.html">Products</a></li>
+            <li><a href="../Pages/admin.html">Admin</a></li>
+            <li><a href="../Pages/create.html" class="active">Create</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <section id="createPage" class="create py-5">
       <div class="container">
         <div class="row justify-content-center">
           <div class="col-lg-8 col-md-10 col-12">
-              <!-- !Form Title -->
-            <h2 class="text-center mb-4">Create New Product</h2>
+            <div class="form-container shadow-lg p-4 rounded-4 bg-white">
+              <h2 class="text-center mb-4 text-primary fw-bold">
+                Create New Product
+              </h2>
 
-            <form id="productForm">
-                <!-- !Product Title -->
+              <form id="productForm" novalidate>
+                <!-- !Title -->
                 <div class="mb-3">
-                <label for="title" class="form-label labelTitle">Product Title</label>
-                <input
-                  type="text"
-                  id="title"
-                  class="form-control productTitle"
-                  placeholder="Enter product title"
-                  required
-                />
-              </div>
+                  <label for="title" class="form-label">Product Title</label>
+                  <input
+                    type="text"
+                    id="title"
+                    class="form-control"
+                    placeholder="Enter product title"
+                    required
+                  />
+                  <small class="error-message"></small>
+                </div>
 
-              <!-- !Description -->
-              <div class="mb-3">
-                <label for="description" class="form-label labelDescription"
-                  >Product Description</label
-                >
-                <textarea
-                  id="description"
-                  class="form-control productDescription"
-                  placeholder="Enter product description"
-                  required
-                ></textarea>
-              </div>
+                <!-- !Description -->
+                <div class="mb-3">
+                  <label for="description" class="form-label"
+                    >Description</label
+                  >
+                  <textarea
+                    id="description"
+                    class="form-control"
+                    rows="3"
+                    placeholder="Enter product description"
+                    required
+                  ></textarea>
+                  <small class="error-message"></small>
+                </div>
 
-              <!-- !Image -->
-              <div class="mb-3">
-                <label for="image" class="form-label labelImage">Product Image URL</label>
-                <input
-                  type="url"
-                  id="image"
-                  class="form-control productImage"
-                  placeholder="Enter product image URL"
-                  required
-                />
-              </div>
+                <!-- !Image -->
+                <div class="mb-3">
+                  <label for="image" class="form-label">Image URL</label>
+                  <input
+                    type="url"
+                    id="image"
+                    class="form-control"
+                    placeholder="Enter image URL"
+                    required
+                  />
+                  <small class="error-message"></small>
+                </div>
 
-              <!-- !Price -->
-              <div class="mb-3">
-                <label for="price" class="form-label labelPrice">Product Price ($)</label>
-                <input
-                  type="number"
-                  id="price"
-                  class="form-control producrPrice"
-                  placeholder="Enter product price"
-                  required
-                />
-              </div>
+                <!-- !Price -->
+                <div class="mb-3">
+                  <label for="price" class="form-label">Price ($)</label>
+                  <input
+                    type="number"
+                    id="price"
+                    class="form-control"
+                    placeholder="Enter product price"
+                    required
+                  />
+                  <small class="error-message"></small>
+                </div>
 
-              <!-- !Category -->
-              <div class="mb-3">
-                <label for="category" class="form-label labelCategory"
-                  >Product Category</label
-                >
-                <select id="category" class="form-select productCategory" required>
-                  <option value="">Select a category</option>
-                </select>
-              </div>
+                <!-- !Category -->
+                <div class="mb-4">
+                  <label for="category" class="form-label">Category</label>
+                  <select id="category" class="form-select" required>
+                    <option value="">Select a category</option>
+                  </select>
+                  <small class="error-message"></small>
+                </div>
 
-              <!-- !Submit -->
-              <button type="submit" class="btn btnCreate">
-                Create Product
-              </button>
-            </form>
+                <!-- !Submit -->
+                <button type="submit" class="btn btnCreate w-100">
+                  <i class="fa-solid fa-plus me-2"></i>Create Product
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
     </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../JS/bootstrap.bundle.min.js"></script>
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const navLinks = document.getElementById("nav-links");
+  const loader = document.getElementById("loader");
+
+  // ========== Navbar Toggle ==========
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+
+  // ========== Form Validation ==========
+  const form = document.getElementById("productForm");
+  const categorySelect = document.getElementById("category");
+  const title = document.getElementById("title");
+  const description = document.getElementById("description");
+  const image = document.getElementById("image");
+  const price = document.getElementById("price");
+  const category = document.getElementById("category");
+
+  function showError(input, message) {
+    const errorEl = input.parentElement.querySelector(".error-message");
+    errorEl.textContent = message;
+    input.classList.add("is-invalid");
+  }
+
+  function clearError(input) {
+    const errorEl = input.parentElement.querySelector(".error-message");
+    errorEl.textContent = "";
+    input.classList.remove("is-invalid");
+  }
+
+  // ========== Loader Functions ==========
+  function showLoader() {
+    loader.style.display = "flex";
+    loader.classList.remove("hide");
+  }
+
+  function hideLoader() {
+    loader.classList.add("hide");
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 3000);
+  }
+
+  // ========== Load Categories ==========
+  async function loadCategories() {
+    showLoader(); // ✅ Show loader while fetching
+    try {
+      const res = await fetch("https://api.escuelajs.co/api/v1/categories");
+      const categories = await res.json();
+
+      categories.forEach((cat) => {
+        const option = document.createElement("option");
+        option.value = cat.id;
+        option.textContent = cat.name;
+        categorySelect.appendChild(option);
+      });
+
+      // ✅ slight delay to make loader visible
+      setTimeout(() => hideLoader(), 500);
+    } catch (err) {
+      console.error("Error loading categories:", err);
+      hideLoader();
+    }
+  }
+
+  // ========== Submit Form ==========
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    document
+      .querySelectorAll(".error-message")
+      .forEach((el) => (el.textContent = ""));
+
+    let isValid = true;
+
+    if (title.value.trim() === "") {
+      showError(title, "Product title is required.");
+      isValid = false;
+    } else clearError(title);
+
+    if (description.value.trim() === "") {
+      showError(description, "Description is required.");
+      isValid = false;
+    } else clearError(description);
+
+    if (image.value.trim() === "") {
+      showError(image, "Image URL is required.");
+      isValid = false;
+    } else clearError(image);
+
+    if (price.value.trim() === "" || price.value <= 0) {
+      showError(price, "Please enter a valid price.");
+      isValid = false;
+    } else clearError(price);
+
+    if (category.value === "") {
+      showError(category, "Please select a category.");
+      isValid = false;
+    } else clearError(category);
+
+    if (!isValid) return;
+
+    const product = {
+      title: title.value,
+      description: description.value,
+      price: parseFloat(price.value),
+      categoryId: parseInt(category.value),
+      images: [image.value],
+    };
+
+    try {
+      showLoader(); // ✅ Show loader before sending request
+
+      const res = await fetch("https://api.escuelajs.co/api/v1/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(product),
+      });
+
+      hideLoader(); // ✅ Hide loader after response
+
+      if (!res.ok) throw new Error("Failed to create product");
+
+      Swal.fire({
+        title: "Success!",
+        text: "Product added successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        window.location.href = "./products.html";
+      });
+    } catch (err) {
+      hideLoader();
+      Swal.fire({
+        title: "Error!",
+        text: "Failed to add product.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  });
+
+  // Initialize
+  loadCategories();
+</script>
+
   </body>
 </html>

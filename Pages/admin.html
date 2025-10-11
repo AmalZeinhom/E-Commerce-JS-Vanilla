@@ -3,55 +3,243 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../CSS/navbar.css" />
+    <link rel="stylesheet" href="../CSS/loader.css" />
+    <link rel="stylesheet" href="../CSS/admin.css" />
   </head>
+
   <body>
-    <section id="adminPage" class="admin">
-      <div class="container">
-        <div class="col-lg-12">
-            <div class="row">
-            <div class="title">
-              <h2>Admin Page - Manage Products</h2>
-            </div>
+    <div class="loader-container" id="loader">
+      <span class="loader"></span>
+    </div>
+    <header>
+      <nav class="navbar">
+        <a href="../index.html" class="logo">
+          <img src="../assets/images/logo.png" alt="Shopping" />
+        </a>
 
-            <div class="search">
-              <input
-                type="search"
-                id="searchInput"
-                placeholder="Search Products By Name.."
-              />
-              <button id="searchBtn">
-                <i class="fa-solid fa-magnifying-glass"></i>
-              </button>
-            </div>
+        <button class="menu-toggle" id="menu-toggle">☰</button>
 
-            <table class="table" id="productsTable">
-              <thead>
-                <tr>
-                  <th>PRODUCT ID</th>
-                  <th>PRODUCT NAME</th>
-                  <th>CATEGORY NAME</th>
-                  <th>CATEGORY ID</th>
-                  <th>ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-
-            <div class="pagination">
-              <button id="prevBtn">
-                <i class="fa-solid fa-angles-left"></i>
-                Previous
-              </button>
-              <button id="nextBtn">
-                Next
-                <i class="fa-solid fa-angles-right"></i>
-              </button>
-            </div>
+        <div class="links" id="nav-links">
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Pages/products.html">Products</a></li>
+            <li><a href="../Pages/admin.html" class="active">Admin</a></li>
+            <li><a href="../Pages/create.html">Create</a></li>
+          </ul>
         </div>
-        </div>
+      </nav>
+    </header>
+
+    <main class="admin container my-5">
+      <div class="text-center mb-4">
+        <h2 class="fw-bold title">
+          <i class="fa-solid fa-gear me-2"></i>Admin Dashboard
+        </h2>
+        <p class="text-muted">Manage all products easily</p>
       </div>
-    </section>
 
+      <!-- Search Box -->
+      <div class="search-box mb-4">
+        <input
+          type="search"
+          id="searchInput"
+          class="form-control"
+          placeholder="Search by product name ..."
+        />
+        <i class="fa-solid fa-magnifying-glass" id="searchBtn"></i>
+      </div>
+
+      <!-- Table -->
+      <div class="table-responsive">
+        <table
+          class="table table-striped align-middle text-center"
+          id="productsTable"
+        >
+          <thead class="table-primary">
+            <tr>
+              <th>ID</th>
+              <th>Product Name</th>
+              <th>Category</th>
+              <th>Category ID</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td colspan="5">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination-controls text-center mt-4">
+        <button id="prevBtn" class="btn btn-outline-primary me-3">
+          <i class="fa-solid fa-angles-left"></i> Previous
+        </button>
+        <button id="nextBtn" class="btn btn-outline-primary">
+          Next <i class="fa-solid fa-angles-right"></i>
+        </button>
+      </div>
+    </main>
+
+    <!-- Scripts -->
+    <script src="../JS/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      const menuToggle = document.getElementById("menu-toggle");
+      const navLinks = document.getElementById("nav-links");
+
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("active");
+      });
+
+      let currentPage = 1;
+      const limit = 10;
+
+      async function fetchProductsDashboard(page = 1, query = "") {
+        loader.style.display = "flex";
+        const offset = (page - 1) * limit;
+        let url = `https://api.escuelajs.co/api/v1/products?offset=${offset}&limit=${limit}`;
+
+        if (query) {
+          url = `https://api.escuelajs.co/api/v1/products/?title=${query}`;
+        }
+
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+          displayProducts(data);
+        } catch (err) {
+          console.error("Error fetching products:", err);
+        } finally {
+          loader.classList.add("hide");
+          setTimeout(() => {
+            loader.style.display = "none";
+          }, 3000);
+        }
+      }
+
+      function displayProducts(products) {
+        const tbody = document.querySelector("#productsTable tbody");
+        tbody.innerHTML = "";
+
+        if (!products.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="5" class="text-danger">No products found</td></tr>';
+          return;
+        }
+
+        products.forEach((p) => {
+          tbody.innerHTML += `
+                  <tr>
+                    <td>${p.id}</td>
+                    <td>${p.title}</td>
+                    <td>${p.category?.name || "N/A"}</td>
+                    <td>${p.category?.id || "-"}</td>
+                    <td>
+                      <a href="./product-details.html?id=${
+                        p.id
+                      }" class="btn btn-sm btn-info text-white">
+                        <i class="fa-solid fa-eye"></i>
+                      </a>
+                      <button class="btn btn-sm btn-warning text-dark" onclick="editProduct(${
+                        p.id
+                      })">
+                        <i class="fa-solid fa-pen"></i>
+                      </button>
+                      <button class="btn btn-sm btn-danger" onclick="deleteProduct(${
+                        p.id
+                      })">
+                        <i class="fa-solid fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>`;
+        });
+      }
+
+      function editProduct(id) {
+        window.location.href = `./edit.html?id=${id}`;
+      }
+
+      async function deleteProduct(id) {
+        const result = await Swal.fire({
+          title: "Are you sure?",
+          text: "This product will be deleted permanently!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Yes, delete it!",
+        });
+
+        if (result.isConfirmed) {
+          try {
+            const res = await fetch(
+              `https://api.escuelajs.co/api/v1/products/${id}`,
+              {
+                method: "DELETE",
+              }
+            );
+
+            if (res.ok) {
+              await Swal.fire({
+                title: "Deleted!",
+                text: "Product has been deleted successfully.",
+                icon: "success",
+                timer: 2000,
+                showConfirmButton: false,
+              });
+              fetchProductsDashboard(currentPage);
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "Failed to delete the product. Please try again.",
+                icon: "error",
+              });
+            }
+          } catch (error) {
+            Swal.fire({
+              title: "Error!",
+              text: "Something went wrong while deleting the product.",
+              icon: "error",
+            });
+          }
+        }
+      }
+
+      document.getElementById("nextBtn").addEventListener("click", () => {
+        currentPage++;
+        fetchProductsDashboard(currentPage);
+      });
+
+      document.getElementById("prevBtn").addEventListener("click", () => {
+        if (currentPage > 1) {
+          currentPage--;
+          fetchProductsDashboard(currentPage);
+        }
+      });
+
+      document.getElementById("searchBtn").addEventListener("click", () => {
+        const query = document.getElementById("searchInput").value.trim();
+        fetchProductsDashboard(1, query);
+      });
+
+      fetchProductsDashboard();
+    </script>
   </body>
 </html>

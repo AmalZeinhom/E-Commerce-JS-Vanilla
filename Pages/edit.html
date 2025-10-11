@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Product</title>
+    <link rel="icon" type="image/png" href="../assets/images/logo.png">
+
+    <!-- !================== Font Awesome =============== -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <link rel="stylesheet" href="../CSS/bootstrap.min.css" />
+    <link rel="stylesheet" href="../CSS/navbar.css" />
+    <link rel="stylesheet" href="../CSS/loader.css">
+    <link rel="stylesheet" href="../CSS/edit.css" />
+    <style>
+      /* ✅ تنسيق رسائل الخطأ */
+      .error-message {
+        color: #d9534f;
+        font-size: 0.9rem;
+        margin-top: 4px;
+        display: none;
+      }
+
+      .form-control.is-invalid,
+      .form-select.is-invalid {
+        border-color: #d9534f;
+        box-shadow: 0 0 0 0.15rem rgba(217, 83, 79, 0.25);
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="loader-container" id="loader">
+      <span class="loader"></span>
+    </div>
+
+     <header>
+      <nav class="navbar">
+        <a href="../index.html" class="logo">
+          <img src="../assets/images/logo.png" alt="Shopping" />
+        </a>
+
+        <button class="menu-toggle" id="menu-toggle">☰</button>
+
+        <div class="links" id="nav-links">
+          <ul>
+            <li><a href="../index.html">Home</a></li>
+            <li><a href="../Pages/products.html">Products</a></li>
+            <li><a href="../Pages/admin.html">Admin</a></li>
+            <li><a href="../Pages/create.html">Create</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+
+    <section class="edit py-5">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8 col-md-10 col-12">
+            <h2 class="text-center mb-4 text-primary fw-bold">Edit Product</h2>
+
+            <form id="editForm" novalidate>
+              <div class="mb-3">
+                <label for="title" class="form-label">Product Title</label>
+                <input type="text" id="title" class="form-control" />
+                <small class="error-message"
+                  >Title is required (min 3 chars)</small
+                >
+              </div>
+
+              <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea id="description" class="form-control"></textarea>
+                <small class="error-message"
+                  >Description is required (min 10 chars)</small
+                >
+              </div>
+
+              <div class="mb-3">
+                <label for="price" class="form-label">Price ($)</label>
+                <input type="number" id="price" class="form-control" />
+                <small class="error-message">Enter a valid price above 0</small>
+              </div>
+
+              <div class="mb-3">
+                <label for="image" class="form-label">Image URL</label>
+                <input type="url" id="image" class="form-control" />
+                <small class="error-message"
+                  >Please enter a valid image URL</small
+                >
+              </div>
+
+              <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" class="form-select">
+                  <option value="">Select category</option>
+                </select>
+                <small class="error-message">Please select a category</small>
+              </div>
+
+              <button type="submit" class="btn btnUpdate w-100 mt-3">
+                <i class="fa-solid fa-pen-to-square me-2"></i>Update Product
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../JS/bootstrap.bundle.min.js"></script>
+<script>
+  const menuToggle = document.getElementById("menu-toggle");
+  const navLinks = document.getElementById("nav-links");
+  const loader = document.getElementById("loader");
+
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("active");
+  });
+
+  const params = new URLSearchParams(window.location.search);
+  const productId = params.get("id");
+  const form = document.getElementById("editForm");
+
+  // ✅ Loader Functions
+  function showLoader() {
+    loader.style.display = "flex";
+    loader.classList.remove("hide");
+  }
+
+  function hideLoader() {
+    loader.classList.add("hide");
+    setTimeout(() => {
+      loader.style.display = "none";
+    }, 3000);
+  }
+
+  // ✅ Validation
+  function validateField(input, condition, message) {
+    const errorMsg = input.parentElement.querySelector(".error-message");
+    if (!condition) {
+      input.classList.add("is-invalid");
+      errorMsg.style.display = "block";
+      errorMsg.textContent = message;
+      return false;
+    } else {
+      input.classList.remove("is-invalid");
+      errorMsg.style.display = "none";
+      return true;
+    }
+  }
+
+  // ✅ Load Categories
+  async function loadCategories(selectedId) {
+    try {
+      const res = await fetch("https://api.escuelajs.co/api/v1/categories");
+      const categories = await res.json();
+      const select = document.getElementById("category");
+
+      categories.forEach((cat) => {
+        const option = document.createElement("option");
+        option.value = cat.id;
+        option.textContent = cat.name;
+        if (cat.id === selectedId) option.selected = true;
+        select.appendChild(option);
+      });
+    } catch (err) {
+      console.error("Error loading categories:", err);
+    }
+  }
+
+  // ✅ Load Product Details
+  async function loadProduct() {
+    showLoader(); // ⬅️ Show loader at start
+    try {
+      const res = await fetch(
+        `https://api.escuelajs.co/api/v1/products/${productId}`
+      );
+      const product = await res.json();
+
+      document.getElementById("title").value = product.title;
+      document.getElementById("description").value = product.description;
+      document.getElementById("price").value = product.price;
+      document.getElementById("image").value = product.images?.[0] || "";
+      await loadCategories(product.category?.id);
+
+      // delay to make loader visible
+      setTimeout(() => hideLoader(), 600);
+    } catch (err) {
+      console.error("Error loading product:", err);
+      hideLoader();
+    }
+  }
+
+  // ✅ Submit Updated Product
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const title = document.getElementById("title");
+    const description = document.getElementById("description");
+    const price = document.getElementById("price");
+    const image = document.getElementById("image");
+    const category = document.getElementById("category");
+
+    const validTitle = validateField(
+      title,
+      title.value.trim().length >= 3,
+      "Title must be at least 3 characters"
+    );
+    const validDesc = validateField(
+      description,
+      description.value.trim().length >= 10,
+      "Description must be at least 10 characters"
+    );
+    const validPrice = validateField(
+      price,
+      price.value > 0,
+      "Enter a valid price above 0"
+    );
+    const validImage = validateField(
+      image,
+      image.value.startsWith("http"),
+      "Enter a valid image URL"
+    );
+    const validCat = validateField(
+      category,
+      category.value !== "",
+      "Please select a category"
+    );
+
+    if (!(validTitle && validDesc && validPrice && validImage && validCat)) {
+      return;
+    }
+
+    const updatedProduct = {
+      title: title.value,
+      description: description.value,
+      price: parseFloat(price.value),
+      categoryId: parseInt(category.value),
+      images: [image.value],
+    };
+
+    try {
+      showLoader(); // ⬅️ Show loader when submitting
+      const res = await fetch(
+        `https://api.escuelajs.co/api/v1/products/${productId}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedProduct),
+        }
+      );
+
+      hideLoader(); // ⬅️ Hide loader after response
+
+      if (!res.ok) throw new Error("Failed to update product");
+
+      Swal.fire({
+        title: "Done!",
+        text: "Product updated successfully 🎉",
+        icon: "success",
+        confirmButtonText: "OK",
+      }).then(() => {
+        window.location.href = "./admin.html";
+      });
+    } catch (err) {
+      hideLoader();
+      Swal.fire({
+        title: "Oops!",
+        text: "Something went wrong!",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  });
+
+  if (productId) loadProduct();
+</script>
+
+  </body>
+</html>
