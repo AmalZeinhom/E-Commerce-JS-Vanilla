@@ -178,21 +178,21 @@
 
         products.forEach((p) => {
           const card = document.createElement("div");
-          const imageSrc =
-            p.images && p.images.length > 0 && p.images[0].startsWith("http")
-              ? p.images[0]
-              : "../assets/images/no-image.png";
           card.className = "product-card";
+
           card.innerHTML = `
-        <a href="./product-details.html?id=${
-          p.id
-        }" class="text-decoration-none">
-          <img src="${imageSrc}" alt="${p.title}" />
-          <h3>${p.title}</h3>
-          <span class="category">${p.category?.name || "Unknown"}</span>
-          <p class="price">$${p.price}</p>
-        </a>
-      `;
+  <a href="./product-details.html?id=${p.id}" class="text-decoration-none">
+    <img 
+      src="${p.images?.[0] || '../assets/images/no-image.png'}"
+      alt="${p.title}"
+      onerror="this.onerror=null; this.src='../assets/images/no-image.png';"
+    />
+    <h3>${p.title}</h3>
+    <span class="category">${p.category?.name || "Unknown"}</span>
+    <p class="price">$${p.price}</p>
+  </a>
+`;
+
           container.appendChild(card);
         });
       }
