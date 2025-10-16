@@ -177,22 +177,29 @@
         }
 
         products.forEach((p) => {
+          let imageUrl = "../assets/images/no-image.png"; // default
+
+          if (p.images && p.images.length > 0) {
+            const img = p.images[0];
+            // accept only valid and accessible URLs
+            if (
+              img.startsWith("https://") &&
+              !img.includes("api.escuelajs.co")
+            ) {
+              imageUrl = img;
+            }
+          }
+
           const card = document.createElement("div");
           card.className = "product-card";
-
           card.innerHTML = `
-  <a href="./product-details.html?id=${p.id}" class="text-decoration-none">
-    <img 
-      src="${p.images?.[0] || '../assets/images/no-image.png'}"
-      alt="${p.title}"
-      onerror="this.onerror=null; this.src='../assets/images/no-image.png';"
-    />
-    <h3>${p.title}</h3>
-    <span class="category">${p.category?.name || "Unknown"}</span>
-    <p class="price">$${p.price}</p>
-  </a>
-`;
-
+      <a href="./product-details.html?id=${p.id}" class="text-decoration-none">
+        <img src="${imageUrl}" alt="${p.title}" />
+        <h3>${p.title}</h3>
+        <span class="category">${p.category?.name || "Unknown"}</span>
+        <p class="price">$${p.price}</p>
+      </a>
+    `;
           container.appendChild(card);
         });
       }
