@@ -53,6 +53,7 @@
   color: #dc3545; 
   font-size: 0.9rem;
   margin-top: 5px;
+  display: none;
 }
 
 .is-invalid {
